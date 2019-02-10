@@ -89,7 +89,7 @@ app.use(errorhandler({
 }));
 
 app.get("/scrabble/", function(req, res) {
-  res.redirect("/scrabble/games.html");
+  res.redirect("/games.html");
 });
 
 db.on('load', function() {
