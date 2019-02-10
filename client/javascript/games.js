@@ -6,13 +6,13 @@ $(document).ready(function() {
 
 function populateGamesList() {
     var gameNumber = 1;
-    $.getJSON('/games', function(data) {
+    $.getJSON('/scrabble/games', function(data) {
         $('table').append(data.map(function(game) {
             return TR(null,
                 TD(null, gameNumber++),
                 game.players.map(function(player) {
                     return TD(null,
-                        A({ href: '/game/' + game.key + '/' + player.key },
+                        A({ href: '/scrabble/game/' + game.key + '/' + player.key },
                             player.name))
                 }))
         }));
@@ -21,6 +21,6 @@ function populateGamesList() {
 
 function addCreateGameLink() {
     return TD(null,
-        A({ href: "/make-game.html" },
+        A({ href: "/scrabble/make-game.html" },
             "Create new game"));
 }

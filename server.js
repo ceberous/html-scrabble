@@ -88,8 +88,8 @@ app.use(errorhandler({
     showStack: true
 }));
 
-app.get("/scrabble/", function(req, res) {
-  res.redirect("/games.html");
+app.get("/", function(req, res) {
+  res.redirect("/scrabble/games.html");
 });
 
 db.on('load', function() {
@@ -609,7 +609,7 @@ app.post("/scrabble/send-game-reminders", function (req, res) {
 });
 
 app.get("/scrabble/game", function(req, res) {
-    res.sendfile(__dirname + '/client/make-game.html');
+    res.sendfile( 'make-game.html');
 });
 
 app.post("/scrabble/game", function(req, res) {
@@ -682,7 +682,7 @@ app.get("/scrabble/game/:gameKey", gameHandler(function (game, req, res, next) {
             res.send(icebox.freeze(response));
         },
         'html': function () {
-            res.sendfile(__dirname + '/client/game.html');
+            res.sendfile( 'game.html');
         }
     });
 }));

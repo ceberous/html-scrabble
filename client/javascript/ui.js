@@ -127,7 +127,7 @@ function UI(game) {
             if (nextGameKey) {
                 $('#log')
                     .append(DIV({ 'class': 'nextGame' },
-                                A({ href: '/game/' + nextGameKey + '/' + $.cookie(ui.gameKey)}, "next game")));
+                                A({ href: '/scrabble/game/' + nextGameKey + '/' + $.cookie(ui.gameKey)}, "next game")));
                 $('#makeNextGame').remove();
             } else {
                 var makeNextGameButton = BUTTON(null, "Make new game");
@@ -231,7 +231,7 @@ function UI(game) {
         if (BrowserDetect.browser == 'Firefox') {
             transports = ['htmlfile', 'xhr-polling', 'jsonp-polling'];
         }
-        
+
         ui.socket = io.connect(null, { transports: transports });
         ui.socket
             .on('connect', function(data) {
@@ -589,9 +589,9 @@ UI.prototype.updateBoardSquare = function(square) {
                 ui.selectSquare(square);
             }
         );
-        
+
         var doneOnce = false;
-        
+
         $(div).draggable({
         revert: "invalid",
         opacity: 1,
@@ -603,7 +603,7 @@ UI.prototype.updateBoardSquare = function(square) {
                         .animate({'font-size' : '120%'}, 300)
                         .addClass("dragBorder");
         },
-        
+
         drag: function(event, jui) {
             if (!doneOnce) {
             $(jui.helper).addClass("dragBorder");
@@ -695,7 +695,7 @@ UI.prototype.updateBoardSquare = function(square) {
         .empty()
         .append(div);
 };
-    
+
 UI.prototype.drawBoard = function() {
     var board = this.board;
 
@@ -727,9 +727,9 @@ UI.prototype.updateRackSquare = function(square) {
         .parent()
         .empty()
         .append(div);
-    
+
     div.setAttribute('id', id);
-    
+
     var a = document.createElement('a');
     div.appendChild(a);
 
@@ -1173,7 +1173,7 @@ UI.prototype.TakeBackTiles = function() {
         ui.rack.tileCount++;
         ui.updateRackSquare(square);
     }
-        
+
     ui.board.forAllSquares(function(boardSquare) {
         if (boardSquare.tile && !boardSquare.tileLocked) {
             putBackToRack(boardSquare.tile);
