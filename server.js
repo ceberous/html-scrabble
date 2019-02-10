@@ -45,7 +45,7 @@ function maybeLoadConfig() {
         catch (e) {
             console.log('error reading configuration:\n' + e);
             process.exit(1);
-        }            
+        }
     }
 
     var defaultConfig = readConfig(__dirname + "/config-default.json");
@@ -84,12 +84,12 @@ app.use(bodyParser());
 app.use(cookieParser());
 app.use(express.static(__dirname + '/client'));
 app.use(errorhandler({
-    dumpExceptions: true, 
+    dumpExceptions: true,
     showStack: true
 }));
 
-app.get("/", function(req, res) {
-  res.redirect("/games.html");
+app.get("/scrabble/", function(req, res) {
+  res.redirect("/scrabble/games.html");
 });
 
 db.on('load', function() {
@@ -497,7 +497,7 @@ Game.prototype.finish = function(reason) {
 
     delete game.whosTurn;
 
-    // Tally scores  
+    // Tally scores
     var playerWithNoTiles;
     var pointsRemainingOnRacks = 0;
     game.players.forEach(function(player) {
@@ -574,7 +574,7 @@ var gameListAuth = basicAuth(function(username, password) {
 
 // Handlers //////////////////////////////////////////////////////////////////
 
-app.get("/games",
+app.get("/scrabble/games",
         config.gameListLogin ? gameListAuth : function (req, res, next) { next(); },
         function(req, res) {
             res.send(db
@@ -593,7 +593,7 @@ app.get("/games",
                      }));
 });
 
-app.post("/send-game-reminders", function (req, res) {
+app.post("/scrabble/send-game-reminders", function (req, res) {
     var count = 0;
     db.all().map(function (game) {
         game = db.get(game.key);
@@ -608,11 +608,11 @@ app.post("/send-game-reminders", function (req, res) {
     res.send("Sent " + count + " reminder emails");
 });
 
-app.get("/game", function(req, res) {
+app.get("/scrabble/game", function(req, res) {
     res.sendfile(__dirname + '/client/make-game.html');
 });
 
-app.post("/game", function(req, res) {
+app.post("/scrabble/game", function(req, res) {
 
     var players = [];
     [1, 2, 3, 4].forEach(function (x) {
@@ -633,7 +633,7 @@ app.post("/game", function(req, res) {
     console.log(players.length, 'players');
     var game = Game.create(req.body.language || 'German', players);
 
-    res.redirect("/game/" + game.key + "/" + game.players[0].key);
+    res.redirect("/scrabble/game/" + game.key + "/" + game.players[0].key);
 });
 
 function gameHandler(handler) {
@@ -654,12 +654,12 @@ function playerHandler(handler) {
     });
 }
 
-app.get("/game/:gameKey/:playerKey", gameHandler(function (game, req, res) {
+app.get("/scrabble/game/:gameKey/:playerKey", gameHandler(function (game, req, res) {
     res.cookie(req.params.gameKey, req.params.playerKey, { path: '/', maxAge: (30 * 24 * 60 * 60 * 1000) });
-    res.redirect("/game/" + req.params.gameKey);
+    res.redirect("/scrabble/game/" + req.params.gameKey);
 }));
 
-app.get("/game/:gameKey", gameHandler(function (game, req, res, next) {
+app.get("/scrabble/game/:gameKey", gameHandler(function (game, req, res, next) {
     req.negotiate({
         'application/json': function () {
             var response = { board: game.board,
@@ -687,7 +687,7 @@ app.get("/game/:gameKey", gameHandler(function (game, req, res, next) {
     });
 }));
 
-app.post("/game/:gameKey", playerHandler(function(player, game, req, res) {
+app.post("/scrabble/game/:gameKey", playerHandler(function(player, game, req, res) {
     var body = icebox.thaw(req.body);
     console.log('put', game.key, 'player', player.name, 'command', body.command, 'arguments', req.body.arguments);
     var tilesAndTurn;

@@ -1,8 +1,13 @@
 {
-    "port": 9093,
-    "baseUrl": "http://localhost:9093/",
+    "port": 4000,
+    "baseUrl": "http://localhost:4000/",
     "mailSender": "Scrabble Server <scrabble@netzhansa.com>",
     "mailTransportConfig": {
         "host": "localhost"
+    },
+    "gameListLogin": {
+        "username": "foo",
+        "password": "bar"
     }
 }
+
